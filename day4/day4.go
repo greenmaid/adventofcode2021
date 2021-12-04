@@ -19,7 +19,7 @@ func main() {
 	fmt.Println("Part1 result : ", step1_getWinnerBoard(draw, boards))
 
 	draw2, boards2 := parseDrawAndBoards(fileContent)
-	fmt.Println("Part2 result : ", step2_getallWinnerBoards(draw2, boards2))
+	fmt.Println("Part2 result : ", step2_getAllWinnerBoards(draw2, boards2))
 }
 
 // Reading files requires checking most calls for errors. This helper will streamline our error checks below.
@@ -77,11 +77,11 @@ func parseDrawAndBoards(input []string) ([]int, []board) {
 }
 
 func step1_getWinnerBoard(draw []int, boards []board) string {
-	for stepCount, drawnNumber := range draw {
+	for _, drawnNumber := range draw {
 		for index := range boards {
 			boards[index] = updateBoard(boards[index], drawnNumber)
 			if isBoardWinning(boards[index]) {
-				fmt.Println("Winning: ", index, boards[index], stepCount)
+				// fmt.Println("Winning: ", index, boards[index])
 				return fmt.Sprintf("Winning score is: %d", getBoardScore(boards[index]))
 			}
 		}
@@ -90,24 +90,17 @@ func step1_getWinnerBoard(draw []int, boards []board) string {
 	return "No winner :("
 }
 
-func step2_getallWinnerBoards(draw []int, boards []board) string {
+func step2_getAllWinnerBoards(draw []int, boards []board) string {
 	lastScore := 0
-	for stepCount, drawnNumber := range draw {
+	for _, drawnNumber := range draw {
 		for index := 0; index < len(boards); index++ {
 			boards[index] = updateBoard(boards[index], drawnNumber)
 			if isBoardWinning(boards[index]) {
 				lastScore = getBoardScore(boards[index])
-				fmt.Println("Winning: ", boards[index], stepCount, lastScore)
+				// fmt.Println("Winning: ", boards[index], lastScore)
 				boards[index] = getNewBoard()
 			}
 		}
 	}
 	return fmt.Sprint("Last Winner score: ", lastScore)
-}
-
-// https://stackoverflow.com/questions/37334119/how-to-delete-an-element-from-a-slice-in-golang
-func removeBoardFromList(boards []board, index int) []board {
-	// boards[index] = boards[len(boards)-1]
-	// return boards[:len(boards)-1]
-	return append(boards[:index], boards[index+1:]...)
 }
