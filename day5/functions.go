@@ -49,25 +49,23 @@ func Step2_calculateOverlapingAreasWithDiag(vents []vent) string {
 
 func drawVentOnMap(mapGrid [1000][1000]int, vent vent, withDiagonals bool) [1000][1000]int {
 
+	direction := 1
 	if vent.start[1] == vent.end[1] {
 		// horizontal vent
 		if vent.start[0] > vent.end[0] {
-			tmpStart := vent.start
-			vent.start = vent.end
-			vent.end = tmpStart
+			direction = -1
 		}
-		for x := vent.start[0]; x <= vent.end[0]; x++ {
-			mapGrid[x][vent.start[1]] += 1
+		for i := 0; i <= (vent.end[0]-vent.start[0])*direction; i++ {
+			mapGrid[vent.start[0] + (i*direction)][vent.start[1]] += 1
 		}
+
 	} else if vent.start[0] == vent.end[0] {
 		// vertical vent
 		if vent.start[1] > vent.end[1] {
-			tmpStart := vent.start
-			vent.start = vent.end
-			vent.end = tmpStart
+			direction = -1
 		}
-		for y := vent.start[1]; y <= vent.end[1]; y++ {
-			mapGrid[vent.start[0]][y] += 1
+		for i := 0; i <= (vent.end[1]-vent.start[1])*direction; i++ {
+			mapGrid[vent.start[0]][vent.start[1] + (i*direction)] += 1
 		}
 	} else if withDiagonals {
 		if vent.start[0] > vent.end[0] {
@@ -75,7 +73,6 @@ func drawVentOnMap(mapGrid [1000][1000]int, vent vent, withDiagonals bool) [1000
 			vent.start = vent.end
 			vent.end = tmpStart
 		}
-		direction := 1
 		if vent.start[1] > vent.end[1] {
 			direction = -1
 		}
