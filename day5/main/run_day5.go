@@ -5,11 +5,11 @@ import (
 	"adventofcode2021/day5"
 	"fmt"
 	"log"
-	"time"
+	// "time"
 )
 
 func main() {
-	defer common.TimeTrack(time.Now(), "day5")
+	// defer common.TimeTrack(time.Now(), "day5")
 	fmt.Println("** Day 5 **")
 	filePath := "day5/input.txt"
 	fileContent := common.ReadFile(filePath)

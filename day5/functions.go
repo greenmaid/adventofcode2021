@@ -11,8 +11,17 @@ type vent struct {
 	end   [2]int
 }
 
-func getNewGrid() [1000][1000]int {
-	return [1000][1000]int{}
+// instead of using a 2d array representing map
+// using a hashmap collecting all point containing some vents
+// I choose to represent point x/y by the key x + 1000*y
+// (I assume x is always under 1000 so there is orthogonality)
+// The associate value will be the number of overlaping vent on this point
+
+type gridmap map[int]int
+
+func getNewGrid() gridmap {
+	grid := make(gridmap)
+	return grid
 }
 
 func ParseInputAsVentCoordinates(input []string) []vent {
@@ -47,7 +56,7 @@ func Step2_calculateOverlapingAreasWithDiag(vents []vent) string {
 	return fmt.Sprintf("%d", overlaps)
 }
 
-func drawVentOnMap(mapGrid [1000][1000]int, vent vent, withDiagonals bool) [1000][1000]int {
+func drawVentOnMap(mapGrid gridmap, vent vent, withDiagonals bool) gridmap {
 
 	direction := 1
 	if vent.start[1] == vent.end[1] {
@@ -56,7 +65,7 @@ func drawVentOnMap(mapGrid [1000][1000]int, vent vent, withDiagonals bool) [1000
 			direction = -1
 		}
 		for i := 0; i <= (vent.end[0]-vent.start[0])*direction; i++ {
-			mapGrid[vent.start[0] + (i*direction)][vent.start[1]] += 1
+			mapGrid[vent.start[0]+(i*direction)+(1000*vent.start[1])] += 1
 		}
 
 	} else if vent.start[0] == vent.end[0] {
@@ -65,7 +74,7 @@ func drawVentOnMap(mapGrid [1000][1000]int, vent vent, withDiagonals bool) [1000
 			direction = -1
 		}
 		for i := 0; i <= (vent.end[1]-vent.start[1])*direction; i++ {
-			mapGrid[vent.start[0]][vent.start[1] + (i*direction)] += 1
+			mapGrid[vent.start[0]+1000*(vent.start[1]+(i*direction))] += 1
 		}
 	} else if withDiagonals {
 		if vent.start[0] > vent.end[0] {
@@ -77,29 +86,27 @@ func drawVentOnMap(mapGrid [1000][1000]int, vent vent, withDiagonals bool) [1000
 			direction = -1
 		}
 		for i := 0; i <= vent.end[0]-vent.start[0]; i++ {
-			mapGrid[vent.start[0]+i][vent.start[1]+(i*direction)] += 1
+			mapGrid[vent.start[0]+i+1000*(vent.start[1]+(i*direction))] += 1
 		}
 
 	}
 	return mapGrid
 }
 
-func countOverlapOnMap(mapGrid [1000][1000]int) int {
+func countOverlapOnMap(mapGrid gridmap) int {
 	count := 0
-	for x := 0; x < 1000; x++ {
-		for y := 0; y < 1000; y++ {
-			if mapGrid[x][y] > 1 {
-				count += 1
-			}
+	for _, value := range mapGrid {
+		if value > 1 {
+			count += 1
 		}
 	}
 	return count
 }
 
-func displayGrid(mapGrid [1000][1000]int) {
+func displayGrid(mapGrid gridmap) {
 	for y := 0; y < 10; y++ {
 		for x := 0; x < 10; x++ {
-			fmt.Print(mapGrid[x][y], " ")
+			fmt.Print(mapGrid[x+1000*y], " ")
 		}
 		fmt.Print("\n")
 	}
