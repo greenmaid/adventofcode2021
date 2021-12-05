@@ -1,50 +1,12 @@
-package main
+package day4
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os"
 	"strconv"
 	"strings"
 )
 
-func main() {
-	fmt.Println("** Days 4 **")
-	// filePath := "day4/day4_input.test.txt"
-	filePath := "day4/day4_input.txt"
-	fileContent := readFile(filePath)
-
-	draw, boards := parseDrawAndBoards(fileContent)
-	fmt.Println("Part1 result : ", step1_getWinnerBoard(draw, boards))
-
-	draw2, boards2 := parseDrawAndBoards(fileContent)
-	fmt.Println("Part2 result : ", step2_getAllWinnerBoards(draw2, boards2))
-}
-
-// Reading files requires checking most calls for errors. This helper will streamline our error checks below.
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
-func readFile(path string) []string {
-	file, err := os.Open(path)
-	check(err)
-	defer file.Close()
-	var content []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		content = append(content, scanner.Text())
-	}
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-	return content
-}
-
-func parseDrawAndBoards(input []string) ([]int, []board) {
+func ParseDrawAndBoards(input []string) ([]int, []board) {
 	drawStr := strings.Split(input[0], ",")
 	var draw []int
 	for _, value := range drawStr {
@@ -76,7 +38,7 @@ func parseDrawAndBoards(input []string) ([]int, []board) {
 	return draw, boards
 }
 
-func step1_getWinnerBoard(draw []int, boards []board) string {
+func Step1_getWinnerBoard(draw []int, boards []board) string {
 	for _, drawnNumber := range draw {
 		for index := range boards {
 			boards[index] = updateBoard(boards[index], drawnNumber)
@@ -90,7 +52,7 @@ func step1_getWinnerBoard(draw []int, boards []board) string {
 	return "No winner :("
 }
 
-func step2_getAllWinnerBoards(draw []int, boards []board) string {
+func Step2_getAllWinnerBoards(draw []int, boards []board) string {
 	lastScore := 0
 	for _, drawnNumber := range draw {
 		for index := 0; index < len(boards); index++ {

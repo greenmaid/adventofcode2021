@@ -1,4 +1,4 @@
-module adventofcode2021/day1/day1
+module adventofcode2021
 
 go 1.17
 

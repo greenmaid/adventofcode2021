@@ -1,43 +1,9 @@
-package main
+package day3
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os"
 	"strconv"
 )
-
-// Reading files requires checking most calls for errors. This helper will streamline our error checks below.
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
-func readFile(path string) []string {
-	file, err := os.Open(path)
-	check(err)
-	defer file.Close()
-	var content []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		content = append(content, scanner.Text())
-	}
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-	return content
-}
-
-func main() {
-	fmt.Println("** Days 3 **")
-	// filePath := "day3/day3_input.test.txt"
-	filePath := "day3/day3_input.txt"
-	fileContent := readFile(filePath)
-	fmt.Println("Part1 result : ", step1_calculateGammaAndEpsilon(fileContent))
-	fmt.Println("Part2 result : ", step2_calculateLifeSupportRating(fileContent))
-}
 
 // get each line as a list of integer
 func parseLineAsBits(line string) []int {
@@ -70,7 +36,7 @@ func convertBinstrToInt(ListofBits []int) (string, int) {
 	return resultStr, int(result)
 }
 
-func step1_calculateGammaAndEpsilon(input []string) string {
+func Step1_calculateGammaAndEpsilon(input []string) string {
 	// get input as int table
 	table := parseWholeInputAs2dArray(input)
 	// get the sum of each digits column
@@ -104,7 +70,7 @@ func step1_calculateGammaAndEpsilon(input []string) string {
 
 //################################################################################
 
-func step2_calculateLifeSupportRating(input []string) string {
+func Step2_calculateLifeSupportRating(input []string) string {
 	// get input as int table
 	table := parseWholeInputAs2dArray(input)
 	columnCount := len(table[0])

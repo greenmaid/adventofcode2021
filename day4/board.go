@@ -1,4 +1,4 @@
-package main
+package day4
 
 type board struct {
 	grid     [5][5]int
@@ -21,16 +21,6 @@ func updateBoard(board board, drawnNumber int) board {
 		}
 	}
 	return board
-}
-
-// Check if a draw (list of int) contains a specific value
-func isValueDrawn(value int, draw []int) bool {
-	for _, a := range draw {
-		if a == value {
-			return true
-		}
-	}
-	return false
 }
 
 func isBoardWinning(board board) bool {
@@ -62,8 +52,8 @@ func getBoardScore(board board) int {
 	if isBoardWinning(board) {
 		// sum unmarked values
 		sum := 0
-		for x := 0; x<5; x++{
-			for y:=0;y<5;y++ {
+		for x := 0; x < 5; x++ {
+			for y := 0; y < 5; y++ {
 				if board.drawGrid[x][y] == 0 {
 					sum += board.grid[x][y]
 				}
