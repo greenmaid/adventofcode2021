@@ -56,15 +56,12 @@ func Test_part1(t *testing.T) {
 
 	count := Step1_calculateOverlapingAreas(vents)
 	assert.Equal(t, "5", count)
-	// assert.True(t, false)
 }
 
 func Test_part2(t *testing.T) {
 	filePath := "input.test.txt"
 	fileContent := common.ReadFile(filePath)
 	vents := ParseInputAsVentCoordinates(fileContent)
-
 	count := Step2_calculateOverlapingAreasWithDiag(vents)
 	assert.Equal(t, "12", count)
-	// assert.True(t, false)
 }

@@ -11,8 +11,11 @@ type vent struct {
 	end   [2]int
 }
 
-func ParseInputAsVentCoordinates(input []string) []vent {
+func getNewGrid() [1000][1000]int {
+	return [1000][1000]int{}
+}
 
+func ParseInputAsVentCoordinates(input []string) []vent {
 	re := regexp.MustCompile(`(\d+),(\d+) -> (\d+),(\d+)`)
 	vents := []vent{}
 	for _, line := range input {
@@ -27,7 +30,7 @@ func ParseInputAsVentCoordinates(input []string) []vent {
 }
 
 func Step1_calculateOverlapingAreas(vents []vent) string {
-	mapGrid := [1000][1000]int{}
+	mapGrid := getNewGrid()
 	for _, vent := range vents {
 		mapGrid = drawVentOnMap(mapGrid, vent, false)
 	}
@@ -36,7 +39,7 @@ func Step1_calculateOverlapingAreas(vents []vent) string {
 }
 
 func Step2_calculateOverlapingAreasWithDiag(vents []vent) string {
-	mapGrid := [1000][1000]int{}
+	mapGrid := getNewGrid()
 	for _, vent := range vents {
 		mapGrid = drawVentOnMap(mapGrid, vent, true)
 	}
@@ -46,33 +49,38 @@ func Step2_calculateOverlapingAreasWithDiag(vents []vent) string {
 
 func drawVentOnMap(mapGrid [1000][1000]int, vent vent, withDiagonals bool) [1000][1000]int {
 
-	orientedVent := vent
-	if vent.start[0] > vent.end[0] {
-		orientedVent.start = vent.end
-		orientedVent.end = vent.start
-	}
-
-	if orientedVent.start[1] == orientedVent.end[1] {
+	if vent.start[1] == vent.end[1] {
 		// horizontal vent
-		for x := orientedVent.start[0]; x <= orientedVent.end[0]; x++ {
-			mapGrid[x][orientedVent.start[1]] += 1
+		if vent.start[0] > vent.end[0] {
+			tmpStart := vent.start
+			vent.start = vent.end
+			vent.end = tmpStart
 		}
-	} else if orientedVent.start[0] == orientedVent.end[0] {
+		for x := vent.start[0]; x <= vent.end[0]; x++ {
+			mapGrid[x][vent.start[1]] += 1
+		}
+	} else if vent.start[0] == vent.end[0] {
 		// vertical vent
-		if orientedVent.start[1] > orientedVent.end[1] {
-			orientedVent.start = vent.end
-			orientedVent.end = vent.start
+		if vent.start[1] > vent.end[1] {
+			tmpStart := vent.start
+			vent.start = vent.end
+			vent.end = tmpStart
 		}
-		for y := orientedVent.start[1]; y <= orientedVent.end[1]; y++ {
-			mapGrid[orientedVent.start[0]][y] += 1
+		for y := vent.start[1]; y <= vent.end[1]; y++ {
+			mapGrid[vent.start[0]][y] += 1
 		}
 	} else if withDiagonals {
+		if vent.start[0] > vent.end[0] {
+			tmpStart := vent.start
+			vent.start = vent.end
+			vent.end = tmpStart
+		}
 		direction := 1
-		if orientedVent.start[1] > orientedVent.end[1] {
+		if vent.start[1] > vent.end[1] {
 			direction = -1
 		}
-		for i := 0; i <= orientedVent.end[0]-orientedVent.start[0]; i++ {
-			mapGrid[orientedVent.start[0]+i][orientedVent.start[1]+(i*direction)] += 1
+		for i := 0; i <= vent.end[0]-vent.start[0]; i++ {
+			mapGrid[vent.start[0]+i][vent.start[1]+(i*direction)] += 1
 		}
 
 	}
