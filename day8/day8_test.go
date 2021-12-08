@@ -40,8 +40,8 @@ func TestPart2_guess(t *testing.T) {
 	filePath := "input.test.txt"
 	fileContent := common.ReadFile(filePath)
 	messages := ParseData(fileContent)
-	guess := guess(messages[0])
-	// displayRemaining(guess)
+	guess := guessByOccurrence(messages[0])
+	displayRemaining(guess)
 	Digit1 := readDigit(messages[0].output[0], guess)
 	Digit2 := readDigit(messages[0].output[1], guess)
 	Digit3 := readDigit(messages[0].output[2], guess)
@@ -50,4 +50,5 @@ func TestPart2_guess(t *testing.T) {
 	assert.Equal(t, "3", Digit2)
 	assert.Equal(t, "5", Digit3)
 	assert.Equal(t, "3", Digit4)
+	// assert.True(t, false)
 }

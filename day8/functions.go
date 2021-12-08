@@ -53,22 +53,22 @@ func Step1_CountOccurrenceOfSpecialDigitsInOutput(messages []message) int {
 
 type remainningPossibilities map[rune]string
 
-func getNewGuess() remainningPossibilities {
-	return remainningPossibilities{
-		'a': "ABCDEFG",
-		'b': "ABCDEFG",
-		'c': "ABCDEFG",
-		'd': "ABCDEFG",
-		'e': "ABCDEFG",
-		'f': "ABCDEFG",
-		'g': "ABCDEFG",
-	}
-}
-func Step2_GessDigits(messages []message) int {
+// func getNewGuess() remainningPossibilities {
+// 	return remainningPossibilities{
+// 		'a': "ABCDEFG",
+// 		'b': "ABCDEFG",
+// 		'c': "ABCDEFG",
+// 		'd': "ABCDEFG",
+// 		'e': "ABCDEFG",
+// 		'f': "ABCDEFG",
+// 		'g': "ABCDEFG",
+// 	}
+// }
 
+func Step2_GessDigits(messages []message) int {
 	count := 0
 	for _, message := range messages {
-		guess := guess(message)
+		guess := guessByOccurrence(message)
 		displayNumber := ""
 		for _, digit := range message.output {
 			number := readDigit(digit, guess)
@@ -89,87 +89,10 @@ func Step2_GessDigits(messages []message) int {
 // E    F
 //  GGGG
 
-func guess(message message) remainningPossibilities {
-	guess := getNewGuess()
-	guess = findA(message, guess)
-	guess = findG(message, guess)
-	guess = guessByOccurrence(message, guess)
-	guess = removeGuessedFromOtherPossibilities(guess)
-	return guess
-}
+func guessByOccurrence(message message) map[rune]string {
 
-// A is only missing in 1 and 4
-// A is the character which is contained by 7 and not 1
-func findA(message message, guess remainningPossibilities) remainningPossibilities {
-	possibilities := ""
-	for _, pattern := range message.input {
-		if len(pattern) == 3 {
-			possibilities = pattern
-			break
-		}
-	}
-	for _, pattern := range message.input {
-		if len(pattern) == 2 {
-			for _, char := range pattern {
-				possibilities = strings.ReplaceAll(possibilities, string(char), "")
-			}
-			break
-		}
-	}
+	guess := make(map[rune]string)
 
-	if len(possibilities) == 1 {
-		for _, value := range possibilities {
-			guess[value] = "A"
-		}
-
-	}
-	return guess
-}
-
-// G is only missing in 1, 7 and 4
-func findG(message message, guess remainningPossibilities) remainningPossibilities {
-	possibilities := "abcdefg"
-	for _, pattern := range message.input {
-		if len(pattern) <= 4 {
-			for _, char := range pattern {
-				possibilities = strings.ReplaceAll(possibilities, string(char), "")
-			}
-			continue
-		}
-		if len(pattern) > 4 {
-			for _, char := range "abcdefg" {
-				if !strings.Contains(pattern, string(char)) {
-					possibilities = strings.ReplaceAll(possibilities, string(char), "")
-				}
-			}
-		}
-	}
-
-	if len(possibilities) == 1 {
-		for _, value := range possibilities {
-			guess[value] = "G"
-		}
-
-	}
-	return guess
-}
-
-// When a segment is guessed, its possibility should be removed from others
-func removeGuessedFromOtherPossibilities(guess remainningPossibilities) remainningPossibilities {
-	for key := range guess {
-		if len(guess[key]) == 1 {
-			guessedSegment := guess[key]
-			for k := range guess {
-				if key != k {
-					guess[k] = strings.ReplaceAll(guess[k], guessedSegment, "")
-				}
-			}
-		}
-	}
-	return guess
-}
-
-func guessByOccurrence(message message, guess remainningPossibilities) remainningPossibilities {
 	patternFor1 := ""
 	for _, pattern := range message.input {
 		if len(pattern) == 2 {
@@ -177,6 +100,15 @@ func guessByOccurrence(message message, guess remainningPossibilities) remainnin
 			break
 		}
 	}
+
+	patternFor4 := ""
+	for _, pattern := range message.input {
+		if len(pattern) == 4 {
+			patternFor4 = pattern
+			break
+		}
+	}
+
 	occurrences := map[rune]int{}
 	for _, pattern := range message.input {
 		for _, char := range pattern {
@@ -184,23 +116,37 @@ func guessByOccurrence(message message, guess remainningPossibilities) remainnin
 		}
 	}
 
-	for char, value := range occurrences {
+	// print occurences
+	// for k, v := range occurrences {
+	// 	fmt.Println(string(k), ": ", v)
+	// }
+
+	for char, count := range occurrences {
 		// segment E only occurs 4 times (2,6,8,0)
-		if value == 4 {
+		if count == 4 {
 			guess[char] = "E"
 		}
 		// segment B occurs 6 times
-		if value == 6 {
+		if count == 6 {
 			guess[char] = "B"
 		}
 		// segment F occurs 9 times
-		if value == 9 {
+		if count == 9 {
 			guess[char] = "F"
 		}
-		// C and F are used by 1
-		// segment C occurs 8 times
-		if value == 8 && strings.Contains(patternFor1, string(char)) {
+		// segment C occurs 8 times and is used by 1
+		// segment A occurs 8 times but is not used by 1
+		if count == 8 && strings.Contains(patternFor1, string(char)) {
 			guess[char] = "C"
+		} else if count == 8 {
+			guess[char] = "A"
+		}
+		// segment D occurs 7 times and is used by 4
+		// segment G occurs 7 times but is not used by 4
+		if count == 7 && strings.Contains(patternFor4, string(char)) {
+			guess[char] = "D"
+		} else if count == 7 {
+			guess[char] = "G"
 		}
 	}
 	return guess
