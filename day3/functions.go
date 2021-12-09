@@ -1,30 +1,17 @@
 package day3
 
 import (
+	"adventofcode2021/common"
 	"fmt"
 	"strconv"
 )
 
-// get each line as a list of integer
-func parseLineAsBits(line string) []int {
-	var bits []int
-	for _, bitStr := range line {
-		bits = append(bits, convertRuneToInt(bitStr))
-	}
-	return bits
-}
-
 func parseWholeInputAs2dArray(input []string) [][]int {
 	var table [][]int
 	for _, line := range input {
-		table = append(table, parseLineAsBits(line))
+		table = append(table, common.ParseLineAsBits(line))
 	}
 	return table
-}
-
-// https://stackoverflow.com/questions/21322173/convert-rune-to-int
-func convertRuneToInt(rune rune) int {
-	return int(rune - '0')
 }
 
 func convertBinstrToInt(ListofBits []int) (string, int) {

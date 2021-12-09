@@ -37,3 +37,17 @@ func ReadFile(path string) []string {
 	}
 	return content
 }
+
+// get each line as a list of integer
+func ParseLineAsBits(line string) []int {
+	var bits []int
+	for _, bitStr := range line {
+		bits = append(bits, convertRuneToInt(bitStr))
+	}
+	return bits
+}
+
+// https://stackoverflow.com/questions/21322173/convert-rune-to-int
+func convertRuneToInt(rune rune) int {
+	return int(rune - '0')
+}
