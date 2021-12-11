@@ -42,3 +42,12 @@ func TestPar1(t *testing.T) {
 	assert.Equal(t, 1656, flashCount)
 
 }
+
+func TestPar2(t *testing.T) {
+	filePath := "input.test.txt"
+	fileContent := common.ReadFile(filePath)
+	octopusMap := ParseDataToOctopusMap(fileContent)
+	count := Step2_FindSynchronizationStep(octopusMap)
+	assert.Equal(t, 195, count)
+
+}
