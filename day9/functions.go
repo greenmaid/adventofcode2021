@@ -39,7 +39,6 @@ func Step1_FindLowPoints(heightmap [][]int) ([]Point, int) {
 				heightmap[y][x] < heightmap[y][x-1] &&
 				heightmap[y][x] < heightmap[y][x+1] {
 				lowPoints = append(lowPoints, Point{x: x, y: y})
-				// fmt.Println("Point", lowPointsCount, " value: ", heightmap[y][x], " coord: ", x, y)
 				lowPointsRiskLevel += heightmap[y][x] + 1
 			}
 		}
@@ -66,7 +65,6 @@ func Step2_FindBassins(heightmap [][]int, lowPoints []Point) int {
 				right := Point{x: bassinPoint.x + 1, y: bassinPoint.y}
 				for _, point := range []Point{up, down, left, right} {
 					if heightmap[point.y][point.x] != 9 &&
-						// heightmap[point.y][point.x] <= heightmap[bassinPoint.y][bassinPoint.x]+1 &&
 						!isPointInBassin(bassin, point) {
 						bassin = append(bassin, point)
 					}
@@ -76,7 +74,6 @@ func Step2_FindBassins(heightmap [][]int, lowPoints []Point) int {
 		}
 		bassins = append(bassins, bassin)
 	}
-	// DisplayBassins(bassins)
 	return scoreBassins(bassins)
 }
 
