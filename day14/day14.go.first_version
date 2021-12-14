@@ -1,0 +1,73 @@
+package day14
+
+import (
+	"fmt"
+	"log"
+	"regexp"
+	"sort"
+)
+
+func ParseData(data []string) (string, map[string]string) {
+	startPolymer := data[0]
+	polymerizationRules := make(map[string]string)
+
+	re := regexp.MustCompile(`^(\w+) -> (\w)$`)
+	for i := 2; i < len(data); i++ {
+		match := re.FindStringSubmatch(data[i])
+		polymerizationRules[match[1]] = match[2]
+	}
+	return startPolymer, polymerizationRules
+}
+
+func Step1(polymer string, rules map[string]string) int {
+	currentPolymer := polymer
+	for step := 1; step <= 10; step++ {
+		nextPolymer := polymerization(currentPolymer, rules)
+		currentPolymer = nextPolymer
+	}
+	return computeMostCommonAndLessCommonElements(currentPolymer)
+
+}
+
+func Step2(polymer string, rules map[string]string) int {
+	currentPolymer := polymer
+	for step := 1; step <= 40; step++ {
+		log.Println("Step: ", step, "  Polymer length: ", len(currentPolymer))
+		nextPolymer := polymerization(currentPolymer, rules)
+		currentPolymer = nextPolymer
+	}
+	return computeMostCommonAndLessCommonElements(currentPolymer)
+
+}
+
+func polymerization(polymer string, rules map[string]string) string {
+	newPolymer := string(polymer[0])
+	pair := string(polymer[0])
+	for x := 1; x < len(polymer); x++ {
+		current := string(polymer[x])
+		pair += current
+		if _, ok := rules[pair]; ok {
+			newPolymer += fmt.Sprintf("%s%s", rules[pair], current)
+		} else {
+			newPolymer += current
+		}
+		pair = current
+	}
+	return newPolymer
+}
+
+func computeMostCommonAndLessCommonElements(currentPolymer string) int {
+	elementRepartition := make(map[rune]int)
+	for _, char := range currentPolymer {
+		elementRepartition[char] += 1
+	}
+
+	elementCountList := make([]int, 0)
+	for _, value := range elementRepartition {
+		elementCountList = append(elementCountList, value)
+	}
+
+	sort.Ints(elementCountList)
+
+	return elementCountList[len(elementCountList)-1] - elementCountList[0]
+}

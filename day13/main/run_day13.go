@@ -9,7 +9,7 @@ import (
 
 func main() {
 	// defer common.TimeTrack(time.Now(), "day13")
-	fmt.Println("** Day 11 **")
+	fmt.Println("** Day 13 **")
 	filePath := "day13/input.txt"
 	fileContent := common.ReadFile(filePath)
 	points, folds := day13.ParseData(fileContent)
