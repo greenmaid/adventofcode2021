@@ -9,7 +9,7 @@ import (
 
 func main() {
 	// defer common.TimeTrack(time.Now(), "day11")
-	fmt.Println("** Day 9 **")
+	fmt.Println("** Day 11 **")
 	filePath := "day11/input.txt"
 	fileContent := common.ReadFile(filePath)
 	grid := day11.ParseDataToOctopusMap(fileContent)
