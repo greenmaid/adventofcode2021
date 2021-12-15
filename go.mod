@@ -2,7 +2,10 @@ module adventofcode2021
 
 go 1.17
 
-require github.com/stretchr/testify v1.7.0
+require (
+	github.com/stretchr/testify v1.7.0
+	github.com/yourbasic/graph v0.0.0-20210606180040-8ecfec1c2869
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.0 // indirect
