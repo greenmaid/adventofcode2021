@@ -2,7 +2,7 @@ package main
 
 import (
 	"adventofcode2021/common"
-	"adventofcode2021/day9"
+	"adventofcode2021/day09"
 	"fmt"
 	// "time"
 )
@@ -10,7 +10,7 @@ import (
 func main() {
 	// defer common.TimeTrack(time.Now(), "day9")
 	fmt.Println("** Day 9 **")
-	filePath := "day9/input.txt"
+	filePath := "day09/input.txt"
 	fileContent := common.ReadFile(filePath)
 	grid := day9.ParseDataToMapGrid(fileContent)
 	lowPoints, count1 := day9.Step1_FindLowPoints(grid)

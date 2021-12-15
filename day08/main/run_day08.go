@@ -2,7 +2,7 @@ package main
 
 import (
 	"adventofcode2021/common"
-	"adventofcode2021/day8"
+	"adventofcode2021/day08"
 	"fmt"
 	// "time"
 )
@@ -10,7 +10,7 @@ import (
 func main() {
 	// defer common.TimeTrack(time.Now(), "day8")
 	fmt.Println("** Day 8 **")
-	filePath := "day8/input.txt"
+	filePath := "day08/input.txt"
 	fileContent := common.ReadFile(filePath)
 	messages := day8.ParseData(fileContent)
 	count1 := day8.Step1_CountOccurrenceOfSpecialDigitsInOutput(messages)

@@ -2,13 +2,13 @@ package main
 
 import (
 	"adventofcode2021/common"
-	"adventofcode2021/day4"
+	"adventofcode2021/day04"
 	"fmt"
 )
 
 func main() {
 	fmt.Println("** Day 4 **")
-	filePath := "day4/input.txt"
+	filePath := "day04/input.txt"
 	fileContent := common.ReadFile(filePath)
 
 	draw, boards := day4.ParseDrawAndBoards(fileContent)

@@ -2,7 +2,7 @@ package main
 
 import (
 	"adventofcode2021/common"
-	"adventofcode2021/day6"
+	"adventofcode2021/day06"
 	"fmt"
 	"log"
 	// "time"
@@ -11,7 +11,7 @@ import (
 func main() {
 	// defer common.TimeTrack(time.Now(), "day6")
 	fmt.Println("** Day 6 **")
-	filePath := "day6/input.txt"
+	filePath := "day06/input.txt"
 	fileContent := common.ReadFile(filePath)
 	pool := day6.ParseDataAsLanterfishPool(fileContent)
 	log.Printf("Fish count: %d", len(pool))
