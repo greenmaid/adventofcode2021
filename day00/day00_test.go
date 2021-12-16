@@ -20,7 +20,7 @@ func TestPart1(t *testing.T) {
 	fileContent := common.ReadFile(filePath)
 	data := ParseData(fileContent)
 	result := Step1(data)
-	assert.Equal(t, 0, result)
+	assert.Equal(t, 1, result)
 }
 
 func TestPart2(t *testing.T) {
@@ -28,5 +28,5 @@ func TestPart2(t *testing.T) {
 	fileContent := common.ReadFile(filePath)
 	data := ParseData(fileContent)
 	result := Step1(data)
-	assert.Equal(t, 0, result)
+	assert.Equal(t, 2, result)
 }
