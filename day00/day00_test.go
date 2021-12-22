@@ -27,6 +27,6 @@ func TestPart2(t *testing.T) {
 	filePath := "input.test.txt"
 	fileContent := common.ReadFile(filePath)
 	data := ParseData(fileContent)
-	result := Step1(data)
+	result := Step2(data)
 	assert.Equal(t, 2, result)
 }
